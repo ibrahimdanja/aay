@@ -1,0 +1,6 @@
+{
+  "name": "Ghost Touch Guard",
+  "description": "Native Android utility to block ghost touches, record heatmaps of screen phantom taps, and guard specific touch zones.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
