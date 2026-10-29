@@ -167,6 +167,7 @@ public class OverlayService extends Service {
 
         // Broadcast stats
         Intent updateIntent = new Intent(ACTION_WATCHER_UPDATE);
+        updateIntent.setPackage(getPackageName());
         updateIntent.putExtra(EXTRA_TOUCHES, totalOutsideTouches);
         updateIntent.putExtra(EXTRA_BURSTS, totalBursts);
         sendBroadcast(updateIntent);

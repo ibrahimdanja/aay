@@ -270,21 +270,34 @@ public class MainActivity extends Activity {
         return btn;
     }
 
+    private boolean isReceiverRegistered = false;
+
     @Override
     protected void onResume() {
         super.onResume();
         updatePermissionButton();
         updateShowZonesButton();
         updateWatcherStats();
-        registerReceiver(watcherReceiver, new IntentFilter(OverlayService.ACTION_WATCHER_UPDATE));
+        if (!isReceiverRegistered) {
+            IntentFilter filter = new IntentFilter(OverlayService.ACTION_WATCHER_UPDATE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                registerReceiver(watcherReceiver, filter, Context.RECEIVER_NOT_EXPORTED);
+            } else {
+                registerReceiver(watcherReceiver, filter);
+            }
+            isReceiverRegistered = true;
+        }
     }
 
     @Override
     protected void onPause() {
         saveConfiguredSeconds();
-        try {
-            unregisterReceiver(watcherReceiver);
-        } catch (Exception ignored) {}
+        if (isReceiverRegistered) {
+            try {
+                unregisterReceiver(watcherReceiver);
+            } catch (Exception ignored) {}
+            isReceiverRegistered = false;
+        }
         super.onPause();
     }
 
